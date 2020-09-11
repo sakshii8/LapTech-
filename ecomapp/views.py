@@ -2,6 +2,7 @@ from django.views.generic import View, TemplateView, CreateView, FormView, Detai
 from django.contrib.auth import authenticate, login, logout
 from .forms import CheckoutForm, CustomerRegistrationForm, CustomerLoginForm
 from django.shortcuts import render, redirect
+from django.db.models import Q
 from django.urls import reverse_lazy
 from .models import *
 
@@ -279,6 +280,19 @@ class CustomerOrderDetailView(DetailView):
         else:
             return redirect("/login/?next=/profile/")
         return super().dispatch(request, *args, **kwargs)
+
+
+class SearchView(TemplateView):
+    template_name = "search.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        kw = self.request.GET.get("keyword")
+        results = Product.objects.filter(
+            Q(title__icontains=kw) | Q(description__icontains=kw) | Q(return_policy__icontains=kw))
+        print(results)
+        context["results"] = results
+        return context
 
 
 # admin pages
