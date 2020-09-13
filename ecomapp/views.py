@@ -2,8 +2,9 @@ from django.views.generic import View, TemplateView, CreateView, FormView, Detai
 from django.contrib.auth import authenticate, login, logout
 from .forms import CheckoutForm, CustomerRegistrationForm, CustomerLoginForm
 from django.shortcuts import render, redirect
-from django.db.models import Q
+from django.core.paginator import Paginator
 from django.urls import reverse_lazy
+from django.db.models import Q
 from .models import *
 
 
@@ -24,7 +25,11 @@ class HomeView(EcomMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['myname'] = "Dipak Niroula"
-        context['product_list'] = Product.objects.all().order_by("-id")
+        products = Product.objects.all().order_by("-id")
+        paginator = Paginator(products, 4)
+        page_number = self.request.GET.get('page')
+        product_list = paginator.get_page(page_number)
+        context['product_list'] = product_list
         return context
 
 
