@@ -25,9 +25,10 @@ class HomeView(EcomMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['myname'] = "Dipak Niroula"
-        products = Product.objects.all().order_by("-id")
-        paginator = Paginator(products, 4)
+        all_products = Product.objects.all().order_by("-id")
+        paginator = Paginator(all_products, 8)
         page_number = self.request.GET.get('page')
+        print(page_number)
         product_list = paginator.get_page(page_number)
         context['product_list'] = product_list
         return context
