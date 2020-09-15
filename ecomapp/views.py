@@ -221,7 +221,7 @@ class KhaltiVerifyView(View):
             "amount": amount
         }
         headers = {
-            "Authorization": "Key test_secret_key_e870cfff05194c559c7e89cab66ab904"
+            "Authorization": "Key test_secret_key_f59e8b7d18b4499ca40f68195a846e9b"
         }
 
         order_obj = Order.objects.get(id=o_id)
