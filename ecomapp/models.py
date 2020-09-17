@@ -79,6 +79,7 @@ ORDER_STATUS = (
 METHOD = (
     ("Cash On Delivery", "Cash On Delivery"),
     ("Khalti", "Khalti"),
+    ("Esewa", "Esewa"),
 )
 
 
