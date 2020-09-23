@@ -1,12 +1,12 @@
 from django.views.generic import View, TemplateView, CreateView, FormView, DetailView, ListView
 from django.contrib.auth import authenticate, login, logout
-from .forms import CheckoutForm, CustomerRegistrationForm, CustomerLoginForm
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.db.models import Q
 from .models import *
+from .forms import *
 import requests
 
 
@@ -452,3 +452,22 @@ class AdminOrderStatuChangeView(AdminRequiredMixin, View):
         order_obj.order_status = new_status
         order_obj.save()
         return redirect(reverse_lazy("ecomapp:adminorderdetail", kwargs={"pk": order_id}))
+
+
+class AdminProductListView(AdminRequiredMixin, ListView):
+    template_name = "adminpages/adminproductlist.html"
+    queryset = Product.objects.all().order_by("-id")
+    context_object_name = "allproducts"
+
+
+class AdminProductCreateView(AdminRequiredMixin, CreateView):
+    template_name = "adminpages/adminproductcreate.html"
+    form_class = ProductForm
+    success_url = reverse_lazy("ecomapp:adminproductlist")
+
+    def form_valid(self, form):
+        p = form.save()
+        images = self.request.FILES.getlist("more_images")
+        for i in images:
+            ProductImage.objects.create(product=p, image=i)
+        return super().form_valid(form)

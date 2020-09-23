@@ -48,4 +48,9 @@ urlpatterns = [
     path("admin-order-<int:pk>-change/",
          AdminOrderStatuChangeView.as_view(), name="adminorderstatuschange"),
 
+    path("admin-product/list/", AdminProductListView.as_view(),
+         name="adminproductlist"),
+    path("admin-product/add/", AdminProductCreateView.as_view(),
+         name="adminproductcreate"),
+
 ]
