@@ -109,3 +109,22 @@ class Order(models.Model):
 
     def __str__(self):
         return "Order: " + str(self.id)
+
+class Contact(models.Model):
+    name = models.CharField(max_length=25)
+    email = models.EmailField(max_length=25)
+    message = models.TextField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+class Enquiry(models.Model):
+    name = models.CharField(max_length=25)
+    contact = models.TextField(max_length=25)
+    email = models.EmailField(max_length=25)
+    message = models.TextField(max_length=255)
+
+    def __str__(self):
+        return self.name
+    
+

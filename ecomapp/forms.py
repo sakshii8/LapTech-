@@ -1,5 +1,5 @@
 from django import forms
-from .models import Order, Customer, Product
+from .models import Order, Customer, Product, Enquiry, Contact
 from django.contrib.auth.models import User
 
 
@@ -118,3 +118,23 @@ class PasswordResetForm(forms.Form):
             raise forms.ValidationError(
                 "New Passwords did not match!")
         return confirm_new_password
+
+class ContactForm(forms.ModelForm):
+    name = forms.CharField(widget= forms.TextInput())
+    email = forms.EmailField(widget= forms.EmailInput())
+    message = forms.CharField(widget= forms.TextInput())
+
+    class Meta:
+        model = Contact
+        fields = ["name", "email", "message"]
+
+class EnquiryForm(forms.ModelForm):
+    name = forms.CharField(widget= forms.TextInput())
+    contact = forms.CharField(widget= forms.TextInput())
+    email = forms.EmailField(widget= forms.EmailInput())
+    message = forms.CharField(widget= forms.TextInput())
+
+    class Meta:
+        model = Enquiry
+        fields = ["name", "contact", "email", "message"]
+

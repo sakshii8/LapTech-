@@ -11,6 +11,10 @@ from django.db.models import Q
 from .models import *
 from .forms import *
 import requests
+from django.http import HttpResponse
+from .forms import EnquiryForm, ContactForm
+
+
 
 
 class EcomMixin(object):
@@ -337,14 +341,36 @@ class CustomerLoginView(FormView):
             return self.success_url
 
 
-class AboutView(EcomMixin, TemplateView):
-    template_name = "about.html"
 
 
-class ContactView(EcomMixin, TemplateView):
-    template_name = "contactus.html"
+
+#def service_view(request):
+    #if request.method == 'POST':
+       # form = EnquiryForm(request.POST)
+       # if form.is_valid():
+           # form.save()
+           # return render(request, 'ecomapp/services.html')
+    #form = EnquiryForm()
+    #context = {'form': form}
+    #return render(request, 'ecomapp/services.html', context)      
+
+         
 
 
+#class ContactView(CreateView):
+    #template_name = "contactus.html"
+    #form_class = ContactForm
+    #success_url = reverse_lazy("ecomapp.contactus")
+
+   # def contact_view(request):
+       # if request.method== 'POST':
+            #form = ContactForm(request.POST)
+            #if form.is_valid():
+              #  form.save()
+      #  form = ContactForm()
+       # context = {'form': form} 
+        #return render(request, 'contactus.html', context)       
+          
 class CustomerProfileView(TemplateView):
     template_name = "customerprofile.html"
 
@@ -444,6 +470,8 @@ class PasswordResetView(FormView):
         user.save()
         return super().form_valid(form)
 
+
+
 # admin pages
 
 
@@ -526,3 +554,30 @@ class AdminProductCreateView(AdminRequiredMixin, CreateView):
         for i in images:
             ProductImage.objects.create(product=p, image=i)
         return super().form_valid(form)
+
+
+class AboutView(CreateView):
+    template_name = "services.html"
+    form_class = EnquiryForm
+    success_url = reverse_lazy("ecomapp:services")
+
+    def form_valid(self, form):
+        name = form.cleaned_data.get("name")
+        contact = form.cleaned_data.get("contact")
+        email = form.cleaned_data.get("email")
+        message = form.cleaned_data.get("message")
+        return super().form_valid(form)
+
+class ContactView(CreateView):
+    template_name = "contactus.html"
+    form_class = ContactForm
+    success_url = reverse_lazy("ecomapp:contactus")
+
+    def form_valid(self, form):
+        name = form.cleaned_data.get("name")
+        email = form.cleaned_data.get("email")
+        message = form.cleaned_data.get("message")
+        return super().form_valid(form)
+
+
+    

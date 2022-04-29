@@ -1,14 +1,16 @@
 from django.urls import path
 from .views import *
-
+from ecomapp import views as service_views
 
 app_name = "ecomapp"
 urlpatterns = [
 
     # Client side pages
     path("", HomeView.as_view(), name="home"),
-    path("about/", AboutView.as_view(), name="about"),
-    path("contact-us/", ContactView.as_view(), name="contact"),
+    path("services/", AboutView.as_view(), name="services"),
+    path("contact-us/", ContactView.as_view(), name="contactus"),
+    #path("services/", service_views.service_view(), name="services"),
+
     path("all-products/", AllProductsView.as_view(), name="allproducts"),
     path("product/<slug:slug>/", ProductDetailView.as_view(), name="productdetail"),
 
